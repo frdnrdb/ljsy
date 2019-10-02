@@ -1,10 +1,13 @@
 {
   "name": "ljsy",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "everyday js",
   "main": "index.js",
+  "module": "index.js",
+  "sideEffects": false,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "git add . && git commit -m 'patch' && npm version patch -m 'patch to %s' && npm publish"
   },
   "repository": {
     "type": "git",

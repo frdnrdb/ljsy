@@ -1,5 +1,3 @@
-import listen from './listen';
-
 /*
     Create Element with props, optionally append to parent or document body
     create and assign: create('div', { className: 'done' })
@@ -12,8 +10,10 @@ const nsList = {
     mathml: 'http://www.w3.org/1998/mathml'
 }
 
-export default function() {
+export function create() {
     const [ type, ...args ] = arguments
+
+    console.log('......', type, args)
 
     const ns = type.indexOf('-'); // 'svg-path'
     const el = ns > -1
@@ -35,11 +35,31 @@ export default function() {
 }
 
 /*
+    Add event-listener(s) (to node or array of nodes)
+    (string:event || [string:event, string:event], node, function, bool:bubbles)
+    Remove event-listener
+    node.unListen.click()
+*/
+
+export function listen(e, n, f, b) {
+    b = b || false;
+    const arr = typeof e === 'string' ? [e] : e
+    const list = n instanceof Element || n === window || n === document ? [n] : n
+    arr.forEach( ev => {
+        list.forEach(el => {
+            el.addEventListener(ev, f, b)
+            el.unListen = el.unListen || {}
+            el.unListen[e] = () => el.removeEventListener(ev, f, b)
+        })
+    })
+}
+
+/*
     addProps({ hello: 'there' }, { 'this.is.something': 'nice' })
     => { hello: 'there', this: { is: { something: 'nice' } } }
     (skips DOM element read-only props)
 */
-function addProps(obj, o) {
+export function addProps(obj, o) {
     //const dom = obj instanceof Element
     Object.entries(o).forEach( ([ key, val ]) => {
 
@@ -92,6 +112,14 @@ function addProps(obj, o) {
 				// immediate callback - apply before dom insertion
 			   	o[key](obj);
             }
+            else if (/^child/.test(key)) {
+                const children = Array.isArray(o[key]) ? o[key] : [ o[key] ];
+                children.forEach(c => {
+                    const type = c.type || 'div';
+                    delete c.type;
+                    create(type, obj, c);
+                });
+            }
             else {
                 obj[key] = obj[key] || (i + 1 < keys.length ? {} : val)
             }
@@ -102,4 +130,4 @@ function addProps(obj, o) {
     })
 
     return obj
-};
+}

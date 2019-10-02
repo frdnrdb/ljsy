@@ -1,55 +1,31 @@
-import create from './src/create';
-import { prepend, append, before, after } from './src/paste';
-import { qs, qsa } from './src/query';
-import { ac, rc, tc, is } from './src/class';
-import closest from './src/closest';
-import waitFor from './src/waitFor';
+export { create, listen, addProps } from './src/create';
+export { prepend, append, before, after } from './src/paste';
+export { qs, qsa } from './src/query';
+export { ac, rc, tc, is } from './src/class';
+export { default as closest } from './src/closest';
+export { default as waitFor } from './src/waitFor';
 
-import listen from './src/listen';
-import triggerEvent from './src/triggerEvent';
+export { default as triggerEvent } from './src/triggerEvent';
 
-import getProp from './src/getProp';
-import { flatten, unFlatten } from './src/flatten';
-import indexOf from './src/indexOf';
-import countBefore from './src/countBefore';
-import shuffle from './src/shuffle';
-import semanticArray from './src/semanticArray';
+export { default as bind } from './src/bind';
+export { default as lazy } from './src/lazy';
+export { default as elvis } from './src/elvis';
 
-import cookie from './src/cookie';
-import regex from './src/regex';
-import { throttle } from './src/throttle';
-import { hash } from './src/hash';
-import { slugify } from './src/slufigy';
+export { default as getProp } from './src/getProp';
+export { flatten, unFlatten } from './src/flatten';
+export { default as indexOf } from './src/indexOf';
+export { default as countBefore } from './src/countBefore';
+export { default as shuffle } from './src/shuffle';
+export { default as semanticArray } from './src/semanticArray';
 
-import { isMobile, isDesktop, isIE, isApp } from './src/userAgent';
+export { default as cookie } from './src/cookie';
+export { default as regex } from './src/regex';
+export { throttle } from './src/throttle';
+export { hash } from './src/hash';
+export { slugify } from './src/slugify';
 
-import fetcher from './src/fetcher';
+export { default as since } from './src/since';
 
-export default {
-    create,                             // create dom elements
-    prepend, append, before, after,     // paste dom elements or html
-    qs, qsa,                            // queryselectors
-    ac, rc, tc, is,                     // classList modifiers
-    closest,
-    waitFor,                            // wait for a dom node to occur before continuing
+export { isMobile, isDesktop, isIE, isApp } from './src/userAgent';
 
-    listen,                             // listen to dom events
-    triggerEvent,
-
-    getProp,
-    flatten, unFlatten,
-    indexOf,                            // current node's index in nodeList
-    countBefore,                        // occurences of nodes with class before node in nodeList
-    shuffle,                            // randomize array
-    semanticArray,                      // 0, 1, 2 {and} 3
-
-    cookie,                             // get, set, del
-    regex,                              // common validators
-    throttle,
-    hash,
-    slugify,
-
-    isMobile, isDesktop, isIE, isApp,
-
-    fetcher                             // fetch wrapper
-};
+export { default as fetcher } from './src/fetcher';
