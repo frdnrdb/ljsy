@@ -7,7 +7,7 @@ export { default as waitFor } from './src/waitFor';
 
 export { default as triggerEvent } from './src/triggerEvent';
 
-export { default as bind } from './src/bind';
+export { default as state } from './src/state';
 export { default as lazy } from './src/lazy';
 export { default as elvis } from './src/elvis';
 

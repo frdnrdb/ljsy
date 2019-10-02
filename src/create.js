@@ -48,6 +48,7 @@ export function listen(e, n, f, b) {
     arr.forEach( ev => {
         list.forEach(el => {
             el.addEventListener(ev, f, b)
+            el.classList.add('cursor')
             el.unListen = el.unListen || {}
             el.unListen[e] = () => el.removeEventListener(ev, f, b)
         })

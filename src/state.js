@@ -2,19 +2,19 @@
     // use MAP to be able to use ELEMENT as key
 
     set('hello', 'there')
-    bind('hello', div, 'innerHTML')
-    bind('hello', div.dataset, 'after')
-    bind('hello', div, 'attribute.before')
-    bind('hello', object {, optional: custom property name })
-    bind('hello', input, 'value', 'keyup')
+    attach('hello', div, 'innerHTML')
+    attach('hello', div.dataset, 'after')
+    attach('hello', div, 'attribute.before')
+    attach('hello', object {, optional: custom property name })
+    attach('hello', input, 'value', 'keyup')
 
     OR
 
-    bind('hello', input, 'value', 'keyup', 'initial value')
+    attach('hello', input, 'value', 'keyup', 'initial value')
 
     OR
 
-    bind('hello', [
+    attach('hello', [
         [div.dataset, 'after']
         [div, 'attribute.before']
         [object {, optional: custom property name vs 'hello' }]
@@ -23,7 +23,7 @@
 
     EX
 
-    state.bind(slider.dataset.source + '-title', slider.dataset.title, [
+    state.attach(slider.dataset.source + '-title', slider.dataset.title, [
         [qs('header span', slider), 'innerHTML'],
         [summaryTitle, 'innerHTML'],
         [qs('.title', meta), 'value', 'input'],
@@ -45,20 +45,20 @@
 */
 
 const scope = {};
-const bindings = {};
+const connections = {};
 
 const get = key => scope[key]
 
 const remove = key => {
     delete scope[key]
-    bindings[key].map( b => b.event && b.element.removeEventListener(b.event, b.func) );
-    delete bindings[key]
+    connections[key].map( b => b.event && b.element.removeEventListener(b.event, b.func) );
+    delete connections[key]
 }
 
 const set = (key, val) => {
 	scope[key] = val
-    bindings[key] = bindings[key] || []
-    bindings[key].map( b => {
+    connections[key] = connections[key] || []
+    connections[key].map( b => {
         if (/attribute/.test(b.property)) {
             b.element.setAttribute(b.property.substring(10), val)
         }   
@@ -81,7 +81,7 @@ const attach = (key, element, property, event, initialValue, callBack) => {
     (list ? property : [ property ]).map(args => {
         const [ k, el, prop, e ] = list ? [ key, ...args ] : [ key, element, property, event ];
 
-        bindings[k].push({ element: el, property: prop, event: e })
+        connections[k].push({ element: el, property: prop, event: e })
 
         if (/attribute/.test(prop)) {
             el.setAttribute(prop.substring(10), scope[k])
@@ -99,7 +99,7 @@ const attach = (key, element, property, event, initialValue, callBack) => {
                     callBack && callBack(e, ev.detail || el[prop], ev);
                 }
                 el.addEventListener(e, func, true)
-                bindings[k][bindings[k].length-1].func = func
+                connections[k][connections[k].length-1].func = func
             }
             prop && (el[prop] = scope[k])
         }
