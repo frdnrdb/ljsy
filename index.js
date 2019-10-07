@@ -4,18 +4,24 @@ export { qs, qsa } from './src/query';
 export { ac, rc, tc, is } from './src/class';
 export { default as closest } from './src/closest';
 export { default as waitFor } from './src/waitFor';
-
 export { default as triggerEvent } from './src/triggerEvent';
+
+export { pipe, pipeAsync } from './src/compose';
 
 export { default as state } from './src/state';
 export { default as lazy } from './src/lazy';
 export { default as elvis } from './src/elvis';
 
+export { scrollTo } from './src/scrollTo';
+export { default as requestFullscreen } from './src/fullscreen';
+
+export { shuffle } from './src/shuffle';
+export { sort } from './src/sort';
+
 export { default as getProp } from './src/getProp';
 export { flatten, unFlatten } from './src/flatten';
 export { default as indexOf } from './src/indexOf';
 export { default as countBefore } from './src/countBefore';
-export { default as shuffle } from './src/shuffle';
 export { default as semanticArray } from './src/semanticArray';
 
 export { default as cookie } from './src/cookie';
@@ -27,5 +33,8 @@ export { slugify } from './src/slugify';
 export { default as since } from './src/since';
 
 export { isMobile, isDesktop, isIE, isApp } from './src/userAgent';
+export { hasCssProperty } from './src/css';
 
 export { default as fetcher } from './src/fetcher';
+
+export { parseUrl } from './src/url';

@@ -13,8 +13,6 @@ const nsList = {
 export function create() {
     const [ type, ...args ] = arguments
 
-    console.log('......', type, args)
-
     const ns = type.indexOf('-'); // 'svg-path'
     const el = ns > -1
         ? document.createElementNS(nsList[type.substring(0, ns)], type.substring(ns + 1))
