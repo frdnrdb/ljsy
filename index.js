@@ -28,7 +28,9 @@ export { default as cookie } from './src/cookie';
 export { default as regex } from './src/regex';
 export { throttle } from './src/throttle';
 export { hash } from './src/hash';
+
 export { slugify } from './src/slugify';
+export { default as truncate } from './src/truncate';
 
 export { default as since } from './src/since';
 
