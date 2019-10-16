@@ -35,6 +35,7 @@ export { default as truncate } from './src/truncate';
 export { default as since } from './src/since';
 
 export { isMobile, isDesktop, isIE, isApp } from './src/userAgent';
+export { isTouch } from './src/device';
 export { hasCssProperty } from './src/css';
 
 export { default as fetcher } from './src/fetcher';
