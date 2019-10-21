@@ -6,7 +6,7 @@ export { default as closest } from './src/closest';
 export { default as waitFor } from './src/waitFor';
 export { default as triggerEvent } from './src/triggerEvent';
 
-export { pipe, pipeAsync } from './src/compose';
+export { default as copyText } from './src/copyText';
 
 export { default as state } from './src/state';
 export { default as lazy } from './src/lazy';
@@ -41,3 +41,5 @@ export { hasCssProperty } from './src/css';
 export { default as fetcher } from './src/fetcher';
 
 export { parseUrl } from './src/url';
+
+export { pipe, pipeAsync } from './src/compose';
