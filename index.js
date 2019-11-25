@@ -36,6 +36,7 @@ export { default as since } from './src/since';
 
 export { isMobile, isDesktop, isIE, isApp } from './src/userAgent';
 export { isTouch } from './src/device';
+export { detectTouchPad } from './src/device';
 export { hasCssProperty } from './src/css';
 
 export { default as fetcher } from './src/fetcher';
@@ -43,3 +44,5 @@ export { default as fetcher } from './src/fetcher';
 export { parseUrl } from './src/url';
 
 export { pipe, pipeAsync } from './src/compose';
+
+export { default as listMethods } from './src/___methods';

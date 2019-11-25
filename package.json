@@ -7,7 +7,7 @@
   "sideEffects": false,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "git add . && git commit -m 'patch' && npm version patch -m 'patch to %s' && npm publish"
+    "deploy": "node predeploy.js && git add . && git commit -m 'patch' && npm version patch -m 'patch to %s' && npm publish"
   },
   "repository": {
     "type": "git",
