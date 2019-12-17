@@ -46,9 +46,8 @@ export function listen(e, n, f, b) {
     arr.forEach( ev => {
         list.forEach(el => {
             el.addEventListener(ev, f, b)
-            el.classList.add('cursor')
             el.unListen = el.unListen || {}
-            el.unListen[e] = () => el.removeEventListener(ev, f, b)
+            el.unListen[ev] = () => el.removeEventListener(ev, f, b)
         })
     })
 }
@@ -106,7 +105,14 @@ export function addProps(obj, o) {
                     node.unListen.DOMNodeInserted();
                     func(node);
                 }
-			}
+            }
+            else if (/^(done|inserted)$/.test(key)) {
+                listen('DOMNodeInsertedIntoDocument', obj, cb.bind(null, o[key], obj), true)
+                function cb(func, node) {
+                    node.unListen.DOMNodeInsertedIntoDocument();
+                    func(node);
+                }
+            }            
             else if (key === 'before') {
 				// immediate callback - apply before dom insertion
 			   	o[key](obj);
