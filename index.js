@@ -45,4 +45,6 @@ export { parseUrl } from './src/url';
 
 export { pipe, pipeAsync } from './src/compose';
 
+export { canPlayHLS } from './src/video';
+
 export { default as listMethods } from './src/___methods';

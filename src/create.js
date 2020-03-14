@@ -29,7 +29,10 @@ export function create() {
 
     props && addProps(el, props);
     (parent || body) && (parent || body).appendChild(el)
-    return el
+    
+    return props.children 
+        ? Array.prototype.concat(el, Array.from(el.children)) 
+        : el
 }
 
 /*
