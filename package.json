@@ -1,12 +1,13 @@
 {
   "name": "ljsy",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "everyday js",
   "main": "index.js",
   "module": "index.js",
   "sideEffects": false,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node predeploy.js",
     "deploy": "node predeploy.js && npm version patch -m 'patch to %s' && npm publish"
   },
   "repository": {
