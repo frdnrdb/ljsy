@@ -30,7 +30,7 @@ export function create() {
     props && addProps(el, props);
     (parent || body) && (parent || body).appendChild(el)
     
-    return props.children 
+    return props && props.children 
         ? Array.prototype.concat(el, Array.from(el.children)) 
         : el
 }

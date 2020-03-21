@@ -7,6 +7,7 @@ export { default as waitFor } from './src/waitFor';
 export { default as triggerEvent } from './src/triggerEvent';
 
 export { default as copyText } from './src/copyText';
+export { default as devLog } from './src/devLog';
 
 export { default as state } from './src/state';
 export { default as lazy } from './src/lazy';
