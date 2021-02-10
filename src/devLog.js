@@ -7,6 +7,7 @@ const _debugElement = () => document.getElementById('dev-debugger') || (div => {
     div.style.padding = '.5em';
     div.style.color = '#fff';
     div.style.fontFamily = 'sans-serif';
+    div.style.zIndex = '9999999';
     return div;
 })(document.body.appendChild(document.createElement('div'))); 
 

@@ -21,6 +21,8 @@ export { sort } from './src/sort';
 
 export { default as getProp } from './src/getProp';
 export { flatten, unFlatten } from './src/flatten';
+export { merge } from './src/merge';
+
 export { default as indexOf } from './src/indexOf';
 export { default as countBefore } from './src/countBefore';
 export { default as semanticArray } from './src/semanticArray';

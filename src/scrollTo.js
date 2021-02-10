@@ -37,7 +37,6 @@ export const scrollTo = (to, callback, parent = window, duration = 360) => {
                 setTimeout(animateScroll, increment);
             }
             else {
-                rc('scrolling');
                 callback && callback();
             }
         };

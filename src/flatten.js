@@ -61,7 +61,7 @@ export const flatten = (obj, options = {}) => {
                 });
                 continue;
             }
-            const flatObject = flattenObject(obj[i], options);
+            const flatObject = flatten(obj[i], options);
             for (let x in flatObject) {
                 if (!flatObject.hasOwnProperty(x)) continue;
 

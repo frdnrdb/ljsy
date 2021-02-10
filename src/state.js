@@ -47,7 +47,9 @@
 const scope = {};
 const connections = {};
 
-const get = key => scope[key]
+const get = key => scope.hasOwnProperty(key) ? scope[key] : scope
+
+const has = key => scope.hasOwnProperty(key)
 
 const remove = key => {
     delete scope[key]
@@ -108,6 +110,7 @@ const attach = (key, element, property, event, initialValue, callBack) => {
 
 export default {
     get,
+    has,
     set,
     remove,
     attach
