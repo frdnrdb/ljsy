@@ -111,7 +111,6 @@ export function addProps(obj, o, root) {
                           if (node === obj) {
                               observer.disconnect();
                               o[key](obj);
-                              console.log('AFTER', key, obj);
                           }
                       });  
                   })

@@ -1,6 +1,6 @@
 {
   "name": "ljsy",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "to each their own shortcuts / everyday js",
   "main": "index.js",
   "module": "index.js",
@@ -22,8 +22,5 @@
   "bugs": {
     "url": "https://github.com/frdnrdb/ljsy/issues"
   },
-  "homepage": "https://github.com/frdnrdb/ljsy#readme",
-  "dependencies": {
-    "ljsy": "^1.0.16"
-  }
+  "homepage": "https://github.com/frdnrdb/ljsy#readme"
 }
