@@ -1,3 +1,5 @@
+const hash = () => new Date().getTime().toString(36) + '-' + Math.random().toString(36).substring(2);
+
 export default function( query, settings, callback, done ) {
 
     if ( window === 'undefined' || !query ) return;
@@ -37,9 +39,11 @@ export default function( query, settings, callback, done ) {
     var states = Array(list.length).fill(0);
     var handler = moderators(config.control)(config.delay, check);
 
+    const prefix = hash();
+
     list.map(function(el) {
-        el._instances = instances.slice();
-        el._elvis = { destroy: removeEvents };
+        el[prefix + 'instances'] = instances.slice();
+        el[prefix + 'elvis'] = { destroy: removeEvents };
     });
 
     function check() {
@@ -60,51 +64,63 @@ export default function( query, settings, callback, done ) {
         if (isElVis(el, i)) {
             if (!states[i]) entering(el, i);
             // reset intermediates for { stop: false } config (exit and re-enter callbacks)
-            !config.stop && (el._instances = instances.slice());
+            !config.stop && (el[prefix + 'instances'] = instances.slice());
         }
         else leaving(el, i);
         list.remaining++;
     }
 
-    function isElVis(el, i) {
-        var h = window.innerHeight || document.documentElement.clientHeight;
-        var w = window.innerWidth || document.documentElement.clientWidth;
+    const WIN = {};
 
+    function isElVis(el, i) {        
         var b = el.getBoundingClientRect();
         updateDirection(el, b);
 
-        el._instances.map(function(instance, n) {
+        el[prefix + 'instances'].map(function(instance, n) {
             if (!instance) return;
 
             var cy = instances.length > 1 ? config.y[instanceKeys[n]] : config.y,
-                py = cy && cy > 0 ? config.x ? b.width - b.width * (cy / 100) : b.height * (cy / 100) : 0,
+                py = cy && cy > 0 
+                    ? config.x 
+                        ? b.width - b.width * (cy / 100) 
+                        : b.height * (cy / 100) 
+                    : 0,
                 pre = cy && cy < 0 ? Math.abs(cy) : 0,
-                wt = (b.top > 0-py-pre) && (b.top < h-py+pre),
-                wb = (b.bottom < h-py+pre) && (b.bottom > 0+py-pre),
-                vt = config.x
-                    ? (b.left > 0+py-pre) && (b.right < w+py+pre)
-                    : (b.top > 0-py-pre) && (b.top < h-py+pre),
-                vb = config.x 
-                    ? (b.right < w+py+pre) && (b.left > 0-py-pre)
-                    : (b.bottom < h-py+pre) && (b.bottom > 0+py-pre);
 
-            if ((wt || wb) && (vt || vb)) {
-                el._instances[n] = 0;
-                el._instances.length > 1 && callback(el, response(i, el, 'intermediate', instanceKeys[n]));
+                // visible top
+                vt = config.x
+                    ? (b.left > 0+py-pre) && (b.right < WIN.w+py+pre)
+                    : (b.top > 0-py-pre) && (b.top < WIN.h-py+pre),
+
+                // visible bottom
+                vb = config.x 
+                    ? (b.right < WIN.w+py+pre) && (b.left > 0-py-pre)
+                    : (b.bottom < WIN.h-py+pre) && (b.bottom > 0+py-pre),
+
+                // visible center (taller than innerHeight)
+                cv = b.top < 0 && b.bottom > WIN.h && (b.bottom - b.top) + b.top - WIN.h,
+                vc = cv && cv > 0 && cv < WIN.h;
+
+            if ((vt || vb || vc)) {
+
+                //console.log({vt,vb,vc});
+
+                el[prefix + 'instances'][n] = 0;
+                el[prefix + 'instances'].length > 1 && callback(el, response(i, el, 'intermediate', instanceKeys[n]));
             }
         });
 
-        return el._instances.reduce(function(sum, i){ return sum += i; }, 0) === 0;
+        return el[prefix + 'instances'].reduce(function(sum, i){ return sum += i; }, 0) === 0;
     }
 
     function timer(el, i) {
-        el._vis += config.frequency;
-        if (el._vis < config.ms) {
-            el._timer = setTimeout(timer.bind(null, el, i), config.frequency);
+        el[prefix + 'vis'] += config.frequency;
+        if (el[prefix + 'vis'] < config.ms) {
+            el[prefix + 'timer'] = setTimeout(timer.bind(null, el, i), config.frequency);
             return;
         }
         if (config.stop) {
-            el._stop = true;
+            el[prefix + 'stop'] = true;
             list[i] = 0;
         }
         callback(el, response(i, el, 'enter'));
@@ -113,9 +129,9 @@ export default function( query, settings, callback, done ) {
     function entering(el, i) {
         states[i] = 1;
 
-        if (!el._stop) {
-            if (!el._vis) el._vis = 0;
-            if (!el._timer) timer(el, i);
+        if (!el[prefix + 'stop']) {
+            if (!el[prefix + 'vis']) el[prefix + 'vis'] = 0;
+            if (!el[prefix + 'timer']) timer(el, i);
         }
 
         config.x && !config.removed && removeEvents(true);
@@ -124,8 +140,8 @@ export default function( query, settings, callback, done ) {
     function leaving(el, i) {
         if (!states[i]) return;
 
-        clearTimeout(el._timer);
-        el._timer = 0;
+        clearTimeout(el[prefix + 'timer']);
+        el[prefix + 'timer'] = 0;
         states[i] = 0;
 
         callback(el, response(i, el, 'exit'));
@@ -134,7 +150,7 @@ export default function( query, settings, callback, done ) {
     function response(i, el, msg, intermediateKey) {
         var o = { 
             state: msg,
-            direction: el._direction, 
+            direction: el[prefix + 'direction'], 
             id: i + 1,
             count: list.length
         };  
@@ -146,25 +162,25 @@ export default function( query, settings, callback, done ) {
     }
 
     function updateDirection(el, b) {
-        var mt = el._t - b.top;
-        var ml = el._l - b.left;
+        var mt = el[prefix + 't'] - b.top;
+        var ml = el[prefix + 'l'] - b.left;
 
-        el._direction = Math.abs(mt) === Math.abs(ml)
+        el[prefix + 'direction'] = Math.abs(mt) === Math.abs(ml)
             ? 'none'
             : Math.abs(mt) > Math.abs(ml)
                 ? mt > 0 ? 'up' : 'down'
                 : ml > 0 ? 'left' : 'right';
 
-        el._t = b.top;                
-        el._l = b.left;             
+        el[prefix + 't'] = b.top;                
+        el[prefix + 'l'] = b.left;             
     }    
 
     function moderators(key) {
         return {
             throttle: function(delay, fn) {
-                var init = new Date().getTime();
+                var init = new Date().getTime(), now;
                 return function() {
-                    var now = new Date().getTime();
+                    now = new Date().getTime();
                     if ((now - init) >= delay) {
                         init = now;
                         fn();
@@ -181,19 +197,39 @@ export default function( query, settings, callback, done ) {
                         }, timeout);                    
                     }
                 }
-            }              
+            },
+            skip: function(threshold = 100, fn) {
+                var prevy = scrollY, y;
+                return function() {
+                    y = scrollY;
+                    if (Math.abs(y - prevy) > threshold) {
+                        prevy = y;
+                        fn();
+                    }
+                }
+            }
         }[key]; 
     }   
+
+    const getH = () => window.innerHeight || document.documentElement.clientHeight;
+    const getW = () => window.innerWidth || document.documentElement.clientWidth;
+    const resizeHandler = () => {
+        WIN.h = getH();
+        WIN.w = getW();
+    };
 
     function removeEvents(windowOnly) {
         config.removed = true;
         window.removeEventListener('scroll', handler, true); 
+        window.removeEventListener('resize', resizeHandler, true); 
         if (windowOnly || parentIsWindow) return;
         config.parent.removeEventListener('scroll', handler, true);
     }
 
+    window.addEventListener('resize', resizeHandler, true);
     window.addEventListener('scroll', handler, true);
     !parentIsWindow && config.parent.addEventListener('scroll', handler, true);
 
+    resizeHandler();
     check();
 }

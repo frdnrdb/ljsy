@@ -1,38 +1,26 @@
-const epochs = { 
-    sekund: 60, 
-    minutt: 60, 
-    time: 24,
-    dag: 7,
-    uke: 4.35,
-    måned: 12,
-    år: 10000 
-};
-const minimal = {
-    sekund: 'sek', 
-    minutt: 'min', 
-    time: 'time',
-    dag: 'dag',
-    uke: 'uke',
-    måned: 'mnd',
-    år: 'år'     
-}
-  const plural = {
-    sekund: 'er', 
-    minutt: 'er', 
-    time: 'r',
-    dag: 'er',
-    uke: 'r',
-    måned: 'er',
-    år: ''   
-};
-export default (date, short) => {
-    date = (new Date().getTime() - (date instanceof Date ? date : new Date(date)).getTime()) / 1000;
-    let result;
-    for (let epoch in epochs) {
-        result = date % epochs[epoch];
-        if (!(date = 0 | date / epochs[epoch]))
-            return epoch === 'sekund'
-            ? 'Akkurat nå'
-            : (result < 0 ? 'Om ' : '') + Math.abs(result) + ' ' + (short ? minimal[epoch] : epoch + (result-1 ? plural[epoch] : ''));
-    }
-}
+const since = (() => {
+    const _ = {
+      epochs: [60, 60, 24, 7, 4.35, 12, 10000],
+      full: ['sekund', 'minutt', 'time', 'dag', 'uke', 'måned', 'år'],
+      plural: ['er', 'er', 'r', 'er', 'r', 'er', ''],
+      min: ['sek', 'min', 'time', 'dag', 'uke', 'mnd', 'år'],
+      now: 'Akkurat nå',
+      ago: ' siden',
+      ahead: 'Om ',
+    };
+
+    const abs = x => (x ^ (x >> 31)) - (x >> 31); // perf: binary alternative to Math.abs(Integer)
+
+    return (date, short, res) => {
+      date = (new Date() - (date instanceof Date ? date : new Date(date))) / 1000;
+        for (let i in _.epochs) {
+          res = date % _.epochs[i];
+          if (!(date = 0 | (date / _.epochs[i])))
+            return i < 1
+              ? _.now // instead of < 60 seconds
+              : `${res < 0 ? _.ahead : ''}${abs(res)} ${short ? _.min[i] : _.full[i]}${res - 1 ? _.plural[i] : ''}${!res >= 0 ? _.ago : ''}`;
+        }
+      };
+})();
+
+export default since;

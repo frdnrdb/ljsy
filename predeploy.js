@@ -1,6 +1,6 @@
-const fs = require('fs');
+import fs from 'fs';
 
-const index = fs.readFileSync(__dirname + '/index.js', 'utf8');
+const index = fs.readFileSync('./index.js', 'utf8');
 
 const methods = index
     .replace(/^export {([^}]+)}.*$/gm, '$1')
@@ -12,4 +12,4 @@ const methods = index
 
 const file = `export default ${JSON.stringify(methods)};`;
 
-fs.writeFileSync(__dirname + '/src/___methods.js', file);
+fs.writeFileSync('./src/___methods.js', file);

@@ -25,3 +25,26 @@ export const isDesktop = (typeof window.orientation == "undefined")
     || (window.innerWidth > 600);
 
 export const isApp = window.navigator.userAgent.indexOf('_app_') > -1 || window.hasOwnProperty('__HYPERION_ENV__');
+
+
+/*
+
+        // adapt pixels/time per common browser (based on 5 min mac os browser trials)
+        // runs smoothly in firefox and chrome, kind of jagged in safari
+        const increment = (() => {
+            const config = {
+                Firefox: 25,
+                Chrome: 25,
+                Safari: 100
+            };
+            const ua = navigator.userAgent;
+            const browser = Object.keys(config)
+                .filter(browser => ua.indexOf(browser) > -1)
+                .shift();
+
+            return config[browser];
+        })();
+
+
+
+*/

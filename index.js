@@ -1,53 +1,53 @@
-export { create, listen, addProps } from './src/create';
-export { prepend, append, before, after } from './src/paste';
-export { qs, qsa } from './src/query';
-export { ac, rc, tc, is } from './src/class';
-export { default as closest } from './src/closest';
-export { default as waitFor } from './src/waitFor';
-export { default as triggerEvent } from './src/triggerEvent';
+export { create, listen, addProps } from './src/create.js';
+export { prepend, append, before, after } from './src/paste.js';
+export { qs, qsa } from './src/query.js';
+export { ac, rc, tc, is } from './src/class.js';
+export { default as closest } from './src/closest.js';
+export { default as waitFor } from './src/waitFor.js';
+export { default as triggerEvent } from './src/triggerEvent.js';
 
-export { default as copyText } from './src/copyText';
-export { default as devLog } from './src/devLog';
+export { default as copyText } from './src/copyText.js';
+export { default as devLog } from './src/devLog.js';
 
-export { default as state } from './src/state';
-export { default as lazy } from './src/lazy';
-export { default as elvis } from './src/elvis';
+export { default as state } from './src/state.js';
+export { default as lazy } from './src/lazy.js';
+export { default as elvis } from './src/elvis.js';
 
-export { scrollTo } from './src/scrollTo';
-export { default as requestFullscreen } from './src/fullscreen';
+export { scrollTo } from './src/scrollTo.js';
+export { default as requestFullscreen } from './src/fullscreen.js';
 
-export { shuffle } from './src/shuffle';
-export { sort } from './src/sort';
+export { shuffle } from './src/shuffle.js';
+export { sort } from './src/sort.js';
 
-export { default as getProp } from './src/getProp';
-export { flatten, unFlatten } from './src/flatten';
-export { merge } from './src/merge';
+export { default as getProp } from './src/getProp.js';
+export { flatten, unFlatten } from './src/flatten.js';
+export { merge } from './src/merge.js';
 
-export { default as indexOf } from './src/indexOf';
-export { default as countBefore } from './src/countBefore';
-export { default as semanticArray } from './src/semanticArray';
+export { default as indexOf } from './src/indexOf.js';
+export { default as countBefore } from './src/countBefore.js';
+export { default as semanticArray } from './src/semanticArray.js';
 
-export { default as cookie } from './src/cookie';
-export { default as regex } from './src/regex';
-export { throttle } from './src/throttle';
-export { hash } from './src/hash';
+export { default as cookie } from './src/cookie.js';
+export { default as regex } from './src/regex.js';
+export { throttle } from './src/throttle.js';
+export { hash, stringHash } from './src/hash.js';
 
-export { slugify } from './src/slugify';
-export { default as truncate } from './src/truncate';
+export { slugify } from './src/slugify.js';
+export { default as truncate } from './src/truncate.js';
 
-export { default as since } from './src/since';
+export { default as since } from './src/since.js';
 
-export { isMobile, isDesktop, isIE, isApp } from './src/userAgent';
-export { isTouch } from './src/device';
-export { detectTouchPad } from './src/device';
-export { hasCssProperty } from './src/css';
+export { isMobile, isDesktop, isIE, isApp } from './src/userAgent.js';
+export { isTouch } from './src/device.js';
+export { detectTouchPad } from './src/device.js';
+export { hasCssProperty } from './src/css.js';
 
-export { default as fetcher } from './src/fetcher';
+export { default as fetcher } from './src/fetcher.js';
 
-export { parseUrl } from './src/url';
+export { parseUrl } from './src/url.js';
 
-export { pipe, pipeAsync } from './src/compose';
+export { pipe, pipeAsync } from './src/compose.js';
 
-export { canPlayHLS } from './src/video';
+export { canPlayHLS } from './src/video.js';
 
-export { default as listMethods } from './src/___methods';
+export { default as listMethods } from './src/___methods.js';

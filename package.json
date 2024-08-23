@@ -1,7 +1,7 @@
 {
   "name": "ljsy",
-  "version": "1.0.15",
-  "description": "everyday js",
+  "version": "1.0.17",
+  "description": "to each their own shortcuts / everyday js",
   "main": "index.js",
   "module": "index.js",
   "type": "module",
@@ -9,7 +9,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "node predeploy.js",
-    "deploy": "node predeploy.js && npm version patch -m 'patch to %s' && npm publish"
+    "deploy": "node predeploy.js && npm publish",
+    "patch-deploy": "node predeploy.js && npm version patch -m 'patch to %s' && npm publish"
   },
   "repository": {
     "type": "git",
@@ -21,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/frdnrdb/ljsy/issues"
   },
-  "homepage": "https://github.com/frdnrdb/ljsy#readme"
+  "homepage": "https://github.com/frdnrdb/ljsy#readme",
+  "dependencies": {
+    "ljsy": "^1.0.16"
+  }
 }

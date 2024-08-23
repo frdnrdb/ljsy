@@ -1,23 +1,38 @@
-export default function(text, limit = 80, readMore = false) {
-    if (!text) return '';
+const truncate = (() => {
+    const defaultMax = 150;
+    const threshold = 10;
+    const breakpointRE = /[^a-zA-ZæøåÆØÅ]/;
+    const ellipsis = '...';
 
-    let temp = document.createElement('div');
-    temp.innerHTML = text;
+    let next, prev;
 
-    text = Array.from(temp.childNodes)
-        .filter( ({ nodeName, nodeType }) => nodeName === 'P' || nodeType === 3 )
-        .map( ({ textContent }) => textContent )
-        .join('')
-        .trim();
+    const calculateBreakpoint = (text, max) => {
+      // return immediately if char at max is a valid breakpoint
+      if (breakpointRE.test(text.charAt(max))) return max;
 
-    temp = undefined;
+      // calculate both forwards and backwards within threshold of max
+      // to get the shortest distance to a valid breakpoint
+      next = prev = 0;
 
-    if (text.length <= limit) return text;
+      for (i = max + 1; i < Math.min(text.length, max + threshold); i++) {
+        if (!breakpointRE.test(text.charAt(i))) continue;
+        next = i;
+        break;
+      }
+      for (i = max - 1; i >= Math.max(0, max - threshold); i--) {
+        if (!breakpointRE.test(text.charAt(i))) continue;
+        prev = i;
+        break;
+      }
 
-    let cut = text.substring(0, limit);
-    cut = cut.replace(/<[^>]*>/g, '');
-    const pos = Math.max( cut.lastIndexOf('.'), cut.lastIndexOf(' ') );
-    const short = (pos > -1 ? cut.substring(0, pos) : cut) + '...';
+      return next && prev
+        ? max - prev < next - max
+          ? prev
+          : next
+        : next || prev || max;
+    };
 
-    return short + (readMore ? ' <div>Les mer</div>' : '');
-}
+    return (text = '', max = defaultMax) => {
+      return text.length <= max ? text : `${text.substring(0, calculateBreakpoint(text, max))}${ellipsis}`;
+    };
+})();

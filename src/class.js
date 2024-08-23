@@ -4,9 +4,9 @@
     ac('hello', div) => div.hello
 */
 export const classActions = (action, classes, nodes) => {
-    classes = Array.isArray(classes) ? classes : [ classes ]
-    nodes = nodes ? Array.isArray(nodes) ? nodes : [ nodes ] : [ document.body ]
-    classes.map( cls => nodes.map(n => n && n.classList[action](cls) ) )
+    classes = Array.isArray(classes) ? classes : [classes]
+    nodes = nodes ? Array.isArray(nodes) ? nodes : [nodes] : [document.body]
+    classes.map(cls => nodes.map(n => n && n.classList[action](cls)))
 }
 /*
     is('classname', node) => node.classList.contains('classname')

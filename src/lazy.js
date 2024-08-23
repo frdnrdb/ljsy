@@ -1,7 +1,17 @@
 export default function(selector, container) {
 
+    const images = Array.from(container.querySelectorAll(selector));
+    const isBG = images[0].nodeName !== 'IMG';
+    const dataSelector = images[0].dataset.src ? 'src' : 'image';
+    const rootMargin = Math.round(window.innerHeight / 2) + 'px';
+    
+    const show = (el, src) => {
+        isBG && el.setAttribute('style', 'background-image:url('+src+')');
+        el.classList.add('on');
+    };
+
     const config = {
-        rootMargin: '-100px 0px',
+        rootMargin: `-${rootMargin}px 0px`,
         threshold: 0.01
     };
   
@@ -13,21 +23,17 @@ export default function(selector, container) {
             observer.unobserve(el);
             
             const img = new Image();
-            const src = el.dataset.image;
-            img.onload = function(){
-                el.setAttribute('style', 'background-image:url('+src+')');
-                el.classList.add('on');
-            };
+            const src = el.dataset[dataSelector];
+            img.onload = () => show(el, src);
             img.src = src;
         });
     };
   
     const observer = 'IntersectionObserver' in window && new IntersectionObserver(onIntersection, config);
-    const images = Array.from(container.querySelectorAll(selector));
 
     images.map(image => observer
         ? observer.observe(image)
-        : image.setAttribute('style', 'background-image:url('+image.dataset.image+')') || image.classList.add('on')
+        : show(image, image.dataset[dataSelector])
     );
 
 }

@@ -1,53 +1,103 @@
-// obj: { a: { b: 'c' } } => obj: { 'a.b': 'c' }
-// options.keep: input [ key, ... ], don't flatten  these
-// options.merge: input [ key, ... ], replaces existing top level properties with nested
-// options.pick: input example { contacts: { key: 'type', value: 'value' } }, pick and reassign properties
-//   (root) contacts: [ { type: 'mail', value: 'a@b.c' } ] => (root) mail: 'a@b.c'
 /*
-export const in =  {
-        "mean": {
-            "mister": {
-                "mustard": {
-                    "sleeps": {
-                        "in": {
-                            "the": "park"
-                        }
-                    }
-                }
-            }
-        },
-        "in": "replace this with nested property"
-        "shaves": {
-            "in": "the dark"
-        },
-        "sleeps in": {
-            "pick": "picked",
-            "a hole": "in the road"
+
+obj
+
+{
+  "mean": {
+    "mister": {
+      "mustard": {
+        "sleeps": {
+          "in": {
+            "the": "park"
+          }
         }
+      }
     }
-    flattenObject(o, { keep: ['sleeps'], merge: ['in'], pick: [ { 'pick': 'zorro' } ] })
-export const out =
-    {
-    "mean.mister.mustard.sleeps": {
-        "in": {
-        "the": "park"
+  },
+  "shaves": {
+    "in": {
+      "the": "dark"
+    }
+  },
+  "sleeps": {
+    "in": {
+      "a": {
+        "hole": {
+          "in": {
+            "the": "road"
+          }
         }
-    },
-    "in": "replace this with nested property",
-    "shaves.in": "the dark",
-    "sleeps in.pick": "picked",
-    "sleeps in.a hole": "in the road"
+      }
     }
-export const out =  { mean.mister.mustard.sleeps.in.the: "park" }
+  },
+  "pick-test": {
+    "what": "saving up to",
+    "for": "buy some clothes"
+  }
+}
+
+flatten(obj)
+
+{
+  "mean.mister.mustard.sleeps.in.the": "park",
+  "shaves.in.the": "dark",
+  "sleeps.in.a.hole.in.the": "road",
+  "pick-test.what": "saving up to",
+  "pick-test.for": "buy some clothes"
+}  
+
+flatten(obj, { pick: { 'pick-test': { key: 'what', value: 'for' } } })
+
+{
+  "mean.mister.mustard.sleeps.in.the": "park",
+  "shaves.in.the": "dark",
+  "sleeps.in.a.hole.in.the": "road",
+  "saving up to": "buy some clothes"
+}  
+
+flatten(obj, { keep: [ 'sleeps' ]})
+
+{
+  "mean.mister.mustard.sleeps": {
+    "in": {
+      "the": "park"
+    }
+  },
+  "shaves.in.the": "dark",
+  "sleeps": {
+    "in": {
+      "a": {
+        "hole": {
+          "in": {
+            "the": "road"
+          }
+        }
+      }
+    }
+  },
+  "pick-test.what": "saving up to",
+  "pick-test.for": "buy some clothes"
+}  
+
+flatten(obj, { merge: [ 'sleeps', 'shaves' ]})
+
+{
+  "mean.mister.mustard.sleeps": "park",
+  "shaves": "dark",
+  "sleeps": "road",
+  "pick-test.what": "saving up to",
+  "pick-test.for": "buy some clothes"
+}  
 
 */
+
 export const flatten = (obj, options = {}) => {
 	const flat = {};
 
 	for (let i in obj) {
         if (!obj.hasOwnProperty(i)) continue;
 
-        // don't flatten skip properties
+        // don't flatten [skip] properties
         const keep = options.keep && options.keep.indexOf(i) > -1;
 
         if (!keep && (typeof obj[i]) === 'object') {
@@ -66,9 +116,7 @@ export const flatten = (obj, options = {}) => {
                 if (!flatObject.hasOwnProperty(x)) continue;
 
                 // merge replace properties
-                const key = options.merge && options.merge.indexOf(i) > -1
-                    ? x
-                    : `${i}.${x}`;
+                const key = options.merge && options.merge.indexOf(i) > -1 ? i : `${i}.${x}`;
                 flat[key] = flatObject[x];
             }
         }
@@ -79,22 +127,6 @@ export const flatten = (obj, options = {}) => {
 	return flat;
 };
 
-/*
-export const in =  { 'mean.mister.mustard' : { 'sleeps.in.the': 'park' } }
-export const out =  {
-        "mean": {
-            "mister": {
-                "mustard": {
-                    "sleeps": {
-                        "in": {
-                            "the": "park"
-                        }
-                    }
-                }
-            }
-        }
-    }
-*/
 export const unFlatten = obj => {
     return Object.keys(obj).reduce((o, k) => {
         const parts = k.split('.');
