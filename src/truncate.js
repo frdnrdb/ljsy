@@ -1,4 +1,4 @@
-const truncate = (() => {
+export default (() => {
     const defaultMax = 150;
     const threshold = 10;
     const breakpointRE = /[^a-zA-ZæøåÆØÅ]/;
